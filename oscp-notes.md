@@ -1,9 +1,3 @@
-
-# Reconnaissance
-
-## DNS
-
-
 # Essential Tools
 
 ## Ncat
