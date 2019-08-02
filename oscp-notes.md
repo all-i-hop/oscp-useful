@@ -389,6 +389,48 @@ chmod +x <OUTPUT>
 ./<OUTPUT>
 ```
 
+### File Handling
+
+Compress zip files
+```console
+zip -r <FILE.zip> <FOLDER>
+```
+
+Extract zip file
+```console
+unzip <FILE.zip>
+```
+
+Compress tar files
+```console
+tar -cvf <FILE.tar> <FOLDER>
+```
+
+Extract tar file
+```console
+tar -xvf <FILE.tar>
+```
+
+Compress tar.gz files
+```console
+tar -zcvf <FILE.tar.gz> <FOLDER>
+```
+
+Extract tar.gz file
+```console
+tar -zxvf <FILE.tar.gz>
+```
+
+Compress tar.bz2 files
+```console
+tar -jcvf <FILE.tar.bz2> <FOLDER>
+```
+
+Extract tar.bz2 file
+```console
+tar -jxvf <FILE>
+```
+
 ## Windows PE
 
 ### Enumeration
